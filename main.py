@@ -1,11 +1,16 @@
+from functools import lru_cache
 from fastapi import FastAPI, Response, status
-from .data import data, create_policy
-from .utils import PrettyJSONResponse, transform_text, spacy_nlp
+from data import data, create_policy
+from utils import PrettyJSONResponse, transform_text, spacy_nlp
 """ run with uvicorn main:app --reload """
 
 app = FastAPI()
 
 DEF_KEYS = ['id', 'title', 'description_text', 'sectors']
+
+@lru_cache(maxsize=None)
+def cached_spacy_nlp(s: str):
+    return spacy_nlp(s)
 
 def output(d: dict, ks=DEF_KEYS):
     return {k: v for k, v  in d.items() if k in ks}
@@ -69,16 +74,18 @@ async def policy_spacy_search(search_terms, response: Response):
     if not spacy_nlp:
         response.status_code = 400
         return {'error': 'spacy not available'}
-    search_terms = transform_text(search_terms)
-    sts = set(search_terms).split()
-    search_terms_nlp
+    
+    search_terms_nlp = spacy_nlp(search_terms)        
+    sts = set(transform_text(search_terms).split())
+    
     def get_spacy_search_data():
         for d in data:
             intersection = sts.intersection(d['terms'])
             if not intersection:
                 continue
-            d['spacy_similarity'] = search_terms_nlp.similarity(spacy_nlp(d['description_text']))
+            # Can preload nlp at server start
+            d['spacy_similarity'] = search_terms_nlp.similarity(cached_spacy_nlp(d['description_text']))
             yield d
-    output_data = [output(d, DEF_KEYS + ['spacy_similarity']) for d in get_search_data()]
+    output_data = [output(d, DEF_KEYS + ['spacy_similarity']) for d in get_spacy_search_data()]
     ordering = 'spacy_similarity'
     return sorted(output_data, key=lambda k: (k[ordering], ), reverse=True)

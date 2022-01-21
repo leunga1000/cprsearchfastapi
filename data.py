@@ -1,4 +1,4 @@
-from .utils import transform_text
+from utils import transform_text
 import csv
 
 def create_policy(l):

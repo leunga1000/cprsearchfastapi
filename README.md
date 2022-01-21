@@ -11,7 +11,9 @@ python -m spacy download en_core_web_md  # for spacy support
 uvicorn main:app --reload
 ```
 
-
+```windows
+docker build -t cpr2 . && docker run -p 8000:8000 -v %cd%:/usr/src/app cpr2
+```
 ### Hello World
 [http://127.0.0.1:8000/]
 
@@ -27,9 +29,15 @@ uvicorn main:app --reload
 If you're not on Windows!
 [http://localhost:8000/policy/spacy_search/environment]
 
+### Tests
+```bash
+pytest tests/tests.py
+```
+
 ### Things to do with more time.
 Complete tests
 Put/Patch/Delete
+Pydantic/ORM etc
 tfidf maybe?
 Store vectors
 NLP models, Bert/Google Universal Sentence Encoder?
