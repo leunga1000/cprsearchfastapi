@@ -25,11 +25,9 @@ async def policy():
 
 @app.get("/policy/{_id}", response_class=PrettyJSONResponse)
 async def read_policy(_id, response: Response):
-    print(data[1])
     ks = ['id', 'title', 'description_text', 'sectors']
     for d in data:
         if d['id'] == _id:
-            print(d)
             return output(d)
     response.status_code = 404
     return {'id': 'not found'}
