@@ -1,6 +1,10 @@
 ### Summary
 
-Thought this would be a simpler implementation rather than Django, so thought I'd take the opportunity to use FastAPI for a slightly larger project. The data is stored in memory, so could be the basis of a sharded application, but may want to drop to a lower level language. Otherwise look into scaled DBs e.g. Redis/ES/Aurora
+Thought this would be a simpler implementation rather than Django, so thought I'd take the opportunity to use FastAPI for a slightly larger project. 
+
+The data is stored in memory, so could be the basis of a sharded application, but may want to drop to a lower level language. Otherwise look into scaled DBs e.g. Redis/ES/Aurora
+
+For a fully structured source package layout etc see the Django implementation.
 
 ### Installation
 
@@ -35,10 +39,10 @@ pytest tests/tests.py
 ```
 
 ### Things to do with more time.
-Complete tests
-Put/Patch/Delete
-Pydantic/ORM etc
-tfidf maybe?
-Store vectors
-NLP models, Bert/Google Universal Sentence Encoder?
+- Complete tests
+- Put/Patch/Delete
+- Pydantic/ORM etc
+- tfidf maybe?
+- Store vectors
+- NLP models, Bert/Google Universal Sentence Encoder?
 
